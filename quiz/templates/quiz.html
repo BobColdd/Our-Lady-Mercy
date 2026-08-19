@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Studies Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 30px 0 20px 0;
+        }
+        
+        .question {
+            background: #f9f9f9;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin: 10px 0;
+        }
+        
+        .option label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        
+        .typing-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            margin-top: 10px;
+        }
+        
+        .typing-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Computer Studies Quiz</h1>
+        <p>Complete all questions below.</p>
+        
+        <form action="{{ url_for('submit') }}" method="POST">
+            <!-- Multiple Choice Questions Section -->
+            <div class="section-title">
+                📝 Part 1: Multiple Choice Questions (15 questions)
+            </div>
+            
+            {% for question in mcq_questions %}
+            <div class="question">
+                <div class="question-text">
+                    <span class="question-number">Q{{ question.id }}</span>
+                    {{ question.text }}
+                </div>
+                <div class="options">
+                    {% for option in question.options %}
+                    <div class="option">
+                        <input type="radio" 
+                               name="mcq_{{ question.id }}" 
+                               value="{{ ['A', 'B', 'C', 'D'][loop.index0] }}"
+                               id="q{{ question.id }}_{{ loop.index0 }}"
+                               required>
+                        <label for="q{{ question.id }}_{{ loop.index0 }}">
+                            {{ ['A', 'B', 'C', 'D'][loop.index0] }}. {{ option }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Typing Questions Section -->
+            <div class="section-title">
+                ✍️ Part 2: Typing Questions (20 questions)
+            </div>
+            
+            {% for question in typing_questions %}
+            <div class="question">
+                <div class="question-text">
+                    <span class="question-number">Q{{ question.id }}</span>
+                    {{ question.text }}
+                    <span class="badge">Typed Answer</span>
+                </div>
+                <textarea name="typing_{{ question.id }}" 
+                          class="typing-input" 
+                          rows="4"
+                          placeholder="Type your detailed answer here..."></textarea>
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-submit">Submit Quiz</button>
+        </form>
+    </div>
+</body>
+</html>

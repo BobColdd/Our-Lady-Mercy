@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Studies Quiz - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url("{{ url_for('static', filename='quiz.jpeg') }}");
+            background-size: cover;       
+            background-position: center;  
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px; /* Reduced screen padding for mobile */
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); 
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            padding: 25px 20px; /* Reduced internal padding to save vertical space */
+            width: 100%;
+            max-width: 380px; /* Made the card smaller (down from 500px) */
+        }
+        
+        .school-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .school-name {
+            color: #667eea;
+            font-size: 20px; /* Sized down slightly for phone layouts */
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .quiz-title {
+            color: #333;
+            font-size: 16px; /* Sized down slightly for phone layouts */
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px; /* Slimmer input boxes */
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-start {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 5px;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-2px);
+        }
+        
+        .info-text {
+            margin-top: 15px;
+            text-align: left; /* Switched to left-aligned for cleaner list item layouts */
+            color: #444; 
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .info-text p {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="school-header">
+            <div class="school-name">OUR LADY MERCY COMMUNITY CENTER/div>
+            <div class="quiz-title">Computer Studies Assessment</div>
+        </div>
+        
+        <form action="{{ url_for('start_quiz') }}" method="POST">
+            <div class="form-group">
+                <label for="student_name">Student Name:</label>
+                <input type="text" id="student_name" name="student_name" required placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="student_id">Student ID:</label>
+                <input type="text" id="student_id" name="student_id" required placeholder="Enter your student ID">
+            </div>
+            
+            <button type="submit" class="btn-start">Start Quiz</button>
+        </form>
+        
+        <div class="info-text">
+            <p>📝 30 questions (20 MCQ + 10 short answer)</p>
+            <p>⏱️ Take your time and answer carefully</p>
+        </div>
+    </div>
+</body>
+</html>
