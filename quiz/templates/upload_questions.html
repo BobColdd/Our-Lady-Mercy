@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Question Bank - Computer Studies Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .upload-card {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+        }
+
+        .header {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #667eea;
+            font-size: 22px;
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .alert.error {
+            background-color: #fde8e8;
+            color: #9b1c1c;
+            border: 1px solid #f8b4b4;
+        }
+
+        .alert.success {
+            background-color: #def7ec;
+            color: #03543f;
+            border: 1px solid #84e1bc;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .file-dropzone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .file-dropzone:hover {
+            border-color: #667eea;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .schema-info {
+            margin-top: 25px;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .schema-info pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-card">
+        <div class="header">
+            <h2>Upload Question Bank</h2>
+            <p style="font-size: 13px; color: #666; margin-top: 4px;">Update quiz questions via JSON configuration</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages">
+              {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form class="upload-form" action="{{ url_for('upload_questions') }}" method="POST" enctype="multipart/form-data">
+            <label for="file_input" class="file-dropzone" id="dropzone_label">
+                📁 <span id="file_name_display">Click to select <strong>questions.json</strong> file</span>
+            </label>
+            <input type="file" name="file" id="file_input" accept=".json" required onchange="updateFileName(this)">
+
+            <button type="submit" class="btn-submit">Upload & Process JSON</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}">← Back to Login</a> | 
+            <a href="{{ url_for('view_all_results') }}">View Results</a>
+        </div>
+
+        <div class="schema-info">
+            <strong>Expected JSON Schema Format:</strong>
+            <pre>
+{
+  "mcq_questions": [
+    {
+      "id": 1,
+      "text": "Question label?",
+      "options": ["A", "B", "C", "D"],
+      "correct": "A"
+    }
+  ],
+  "typing_questions": [
+    {
+      "id": 16,
+      "text": "Question label?",
+      "keywords": ["key1", "key2"]
+    }
+  ]
+}</pre>
+        </div>
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const display = document.getElementById('file_name_display');
+            if (input.files && input.files[0]) {
+                display.textContent = "Selected: " + input.files[0].name;
+            } else {
+                display.innerHTML = 'Click to select <strong>questions.json</strong> file';
+            }
+        }
+    </script>
+</body>
+</html>
